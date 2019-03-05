@@ -23,7 +23,17 @@ except ImportError:
     py3 = True
 
 def add_customer():
-    print('adminpanel_support.add_customer')
+    #print('adminpanel_support.add_customer')
+    first_name=w.TEntry12.get()
+    last_name=w.TEntry13.get()
+    mobile1=w.TEntry14.get()
+    address1=w.TEntry15.get()
+    #print(first_name)
+    connector=sqlite3.connect("customerdetails.db")
+    c=connector.cursor()
+    c.execute("""insert into details values(?,?,?,?)""",(first_name,last_name,mobile1,address1))
+    connector.commit()
+    c.close()
     sys.stdout.flush()
 
 def addemployee():
@@ -99,7 +109,18 @@ def addtodb():
     sys.stdout.flush()
 
 def delete_customer():
-    print('adminpanel_support.delete_customer')
+    #print('adminpanel_support.delete_customer')
+    first_name=w.TEntry16.get()
+    last_name=w.TEntry17.get()
+    connector=sqlite3.connect("customerdetails.db")
+    c=connector.cursor()
+    try:
+        c.execute("""delete from details where firstname=? and lastname=?""",(first_name,last_name))
+    except:
+        print("invalid name")
+    
+    connector.commit()
+    connector.close()
     sys.stdout.flush()
 
 def delete_employee():
@@ -116,7 +137,7 @@ def delete_employee():
     #print(newids)
     for every in range(0,len(newids)):
         if goodid==newids[every]:
-            c.execute("""delete from employeedetails where eid=?""",(goodid))
+            c.execute("""delete from employeedetails where eid=?""",(goodid,))
             connector.commit()
             present=1
     if present==0:
